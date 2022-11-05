@@ -41,35 +41,37 @@ const Login = (props) => {
     isValid: null,
   });
 
-  // useEffect(() => {
-  //   const identifier = setTimeout(() => {
-  //     console.log("추적중");
-  //     setFormIsValid(
-  //       enteredEmail.includes("@") && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500);
+  // 객체 구조 분해, @@: 별칭 할당
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
 
-  //   //clean up function
-  //   return () => {
-  //     console.log("clean up");
-  //     //클린업 함수가 실행되기 전에 설정된 타이머를 지움
-  //     //즉, 새로운 타이머를 설정하기 전에 마지막 타이머를 지움
-  //     clearTimeout(identifier);
-  //   };
-  // }, [enteredEmail, enteredPassword]);
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log("추적중");
+      setFormIsValid(emailIsValid && passwordIsValid);
+    }, 500);
+
+    //clean up function
+    return () => {
+      console.log("clean up");
+      //클린업 함수가 실행되기 전에 설정된 타이머를 지움
+      //즉, 새로운 타이머를 설정하기 전에 마지막 타이머를 지움
+      clearTimeout(identifier);
+    };
+  }, [emailIsValid, passwordIsValid]);
 
   //이메일 유효성 검사
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
 
-    setFormIsValid(event.target.value.includes("@") && passwordState.isValid);
+    // setFormIsValid(event.target.value.includes("@") && passwordState.isValid);
   };
 
   //비밀번호 유효성 검사
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: "USER_INPUT", val: event.target.value });
 
-    setFormIsValid(emailState.isValid && event.target.value.trim().length > 6);
+    // setFormIsValid(emailState.isValid && event.target.value.trim().length > 6);
   };
 
   const validateEmailHandler = () => {
